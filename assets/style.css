@@ -226,3 +226,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 .other li a { text-align: right; }
 @media (max-width: 720px) { .other li { grid-template-columns: 1fr; } .other li a { text-align: left; } }
 @media (max-width: 480px) { .nav ul { gap: 14px; } .legend time { min-width: 4.6em; } }
+
+/* reading progress */
+.progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: var(--accent); z-index: 20; transition: width .1s linear; }
+@media (prefers-reduced-motion: reduce) { .progress { transition: none; } }

@@ -120,3 +120,17 @@ document.documentElement.classList.add("js");
     items.forEach((li) => (li.hidden = f !== "all" && !li.dataset.cat.split(" ").includes(f)));
   });
 })();
+
+// Reading progress bar
+(() => {
+  const bar = document.createElement("div");
+  bar.className = "progress";
+  document.body.prepend(bar);
+  const paint = () => {
+    const h = document.documentElement.scrollHeight - innerHeight;
+    bar.style.width = (h > 0 ? (scrollY / h) * 100 : 0) + "%";
+  };
+  addEventListener("scroll", paint, { passive: true });
+  addEventListener("resize", paint);
+  paint();
+})();
