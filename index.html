@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Martin Bouvet — I build AI systems that work while I don't</title>
+<meta name="description" content="Portfolio of Martin Bouvet, business student at emlyon who studied generative and agentic AI at Oxford. AI agents, a second brain that works overnight, and products shipped from market thesis to code.">
+<meta property="og:title" content="Martin Bouvet — I build AI systems that work while I don't">
+<meta property="og:description" content="AI agents, a second brain that works overnight, and products shipped from market thesis to code.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://martinbouvet2000-tech.github.io/">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="assets/favicon.svg">
+</head>
+<body>
+<nav class="nav"><div class="wrap">
+  <a class="brand" href="./">martin<b>@</b>bouvet</a>
+  <ul>
+    <li><a href="#work">Work</a></li>
+    <li class="hide-s"><a href="#business">Business</a></li>
+    <li class="hide-s"><a href="#more">More</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <button class="theme-btn" aria-label="Toggle theme">☾</button>
+</div></nav>
+
+<header class="hero"><div class="wrap hero-grid">
+  <div>
+    <span class="kicker">Martin Bouvet · Builder × Business × AI</span>
+    <h1>I build AI systems that work <em>while I don't.</em></h1>
+    <p class="lede">I'm a business student at emlyon who studied LLMs, generative and agentic AI at Oxford. I treat AI agents as a team: they capture what I learn, consolidate it at night, write code with me and ship products. This page is the proof.</p>
+    <div class="cta">
+      <a class="btn primary" href="#work">See the work ↓</a>
+      <a class="btn" href="https://github.com/martinbouvet2000-tech" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+  <div class="dial-box reveal">
+    <svg class="dial" viewBox="0 0 400 400" role="img" aria-label="24-hour dial showing when my automated systems run, with the current Paris time"></svg>
+    <ul class="legend" aria-label="Scheduled systems, Paris time"></ul>
+  </div>
+</div></header>
+
+<script type="application/json" id="jobs">
+[
+  {"label": "Nightly agent consolidates the day's notes", "at": [0.5]},
+  {"label": "GitHub profile card rebuilds itself", "at": [7.28]},
+  {"label": "Saves pipeline: videos → scored notes", "at": [9, 21]},
+  {"label": "Second brain versioned to GitHub", "at": [23]}
+]
+</script>
+
+<div class="numbers"><div class="wrap">
+  <div><b>4</b><span>systems on a schedule</span></div>
+  <div><b>1,060</b><span>notes in my second brain</span></div>
+  <div><b>460+</b><span>automated tests across projects</span></div>
+  <div><b>8</b><span>live demos</span></div>
+</div></div>
+
+<section class="block" id="work"><div class="wrap">
+  <div class="sec-head">
+    <div><span class="kicker">Selected work</span><h2>Five case studies</h2></div>
+    <p>Two agent systems, two products, and one venture taken from market thesis to a working v0. Each page shows the problem, the architecture, the decisions and honest numbers.</p>
+  </div>
+  <div class="cases">
+    <a class="case wide reveal" href="work/cortex.html">
+      <span class="num">01</span>
+      <span class="kicker">AI product · live</span>
+      <h3>Cortex: course handout in, study system out</h3>
+      <p>Drop in a PDF, get a study sheet, quizzes, spaced repetition and a tutor that only answers from your course. Freemium with Stripe, admin panel you can run from a phone.</p>
+      <div class="meta"><span class="tag live">live</span><span class="tag">Next.js 16</span><span class="tag">Claude</span><span class="tag">Stripe</span><span class="tag">33 tests</span></div>
+      <span class="arrow">Read the case study →</span>
+    </a>
+    <a class="case reveal" href="work/ai-os.html">
+      <span class="num">02</span>
+      <span class="kicker">Agent system · daily</span>
+      <h3>The AI OS: a second brain with a night shift</h3>
+      <p>Saved videos become scored notes twice a day; an agent consolidates them at 00:30; my other agents search it before answering.</p>
+      <div class="meta"><span class="tag">Python 8.3k lines</span><span class="tag">Claude Code</span><span class="tag">Obsidian</span></div>
+      <span class="arrow">Read the case study →</span>
+    </a>
+    <a class="case reveal" href="work/hao.html">
+      <span class="num">03</span>
+      <span class="kicker">Agent system · prototype</span>
+      <h3>HAO: agents with a chain of command</h3>
+      <p>LLM agents organised like a company. They decide, use tools, and escalate to their manager when their confidence is too low.</p>
+      <div class="meta"><span class="tag">TypeScript</span><span class="tag">3 LLM providers</span><span class="tag">55 tests</span></div>
+      <span class="arrow">Read the case study →</span>
+    </a>
+    <a class="case reveal" href="work/nous-deux.html">
+      <span class="num">04</span>
+      <span class="kicker">Product · live · open source</span>
+      <h3>Nous Deux: warm product, paranoid backend</h3>
+      <p>A private space for long-distance couples. Row-level security on every table, content-free notifications, 48-hour location retention.</p>
+      <div class="meta"><span class="tag live">live</span><span class="tag">React 19</span><span class="tag">Supabase</span><span class="tag">374 tests</span></div>
+      <span class="arrow">Read the case study →</span>
+    </a>
+    <a class="case reveal" href="work/diavie.html">
+      <span class="num">05</span>
+      <span class="kicker">Business × product · live</span>
+      <h3>Diavie: regulation read before code written</h3>
+      <p>A French companion for people living with diabetes. Mapped against EU medical-device rules first, local-first by design, gated by evidence.</p>
+      <div class="meta"><span class="tag live">live</span><span class="tag">€0 to run</span><span class="tag">PWA</span></div>
+      <span class="arrow">Read the case study →</span>
+    </a>
+  </div>
+</div></section>
+
+<section class="block" id="business" style="background:var(--bg-2);border-block:1px solid var(--line)"><div class="wrap">
+  <div class="sec-head">
+    <div><span class="kicker">From market thesis to working product</span><h2>The business side</h2></div>
+    <p>Code is half the job. The other half is finding who pays, for what, and packaging it. No paying customers yet; here is what's on the table.</p>
+  </div>
+  <div class="biz">
+    <article class="reveal">
+      <span class="kicker">Active offer</span>
+      <h3>E-invoicing readiness audit</h3>
+      <p>France is rolling out mandatory e-invoicing: receiving from September 2026, issuing from September 2027. I'm packaging a fixed-price audit that gets small shops and craftspeople in Lyon ready before penalties apply.</p>
+    </article>
+    <article class="reveal">
+      <span class="kicker">Productised service</span>
+      <h3>AI Second Brain kit</h3>
+      <p>The system behind my own AI OS, turned into a deliverable: a vault template, a timed delivery checklist and a client guide, priced as a one-off service.</p>
+    </article>
+    <article class="reveal">
+      <span class="kicker">Opportunity scouting</span>
+      <h3><a href="https://github.com/martinbouvet2000-tech/business-idea-radar">Business Idea Radar</a></h3>
+      <p>Scans Reddit for recurring pain points and ranks them as business opportunities, with an optional Claude check. How I look for problems worth solving.</p>
+    </article>
+  </div>
+</div></section>
+
+<section class="block" id="more"><div class="wrap">
+  <div class="sec-head">
+    <div><span class="kicker">Also built</span><h2>More projects</h2></div>
+  </div>
+  <div class="filters" role="group" aria-label="Filter projects">
+    <button data-f="all" aria-pressed="true">All</button>
+    <button data-f="agents" aria-pressed="false">AI &amp; agents</button>
+    <button data-f="product" aria-pressed="false">Products</button>
+    <button data-f="learning" aria-pressed="false">Education</button>
+    <button data-f="business" aria-pressed="false">Business</button>
+  </div>
+  <ul class="other">
+    <li data-cat="learning product"><b>Oral PASS prep</b><span>Revision app for medical school orals: question banks, infographics, progress synced across devices with Firebase.</span><a href="https://martinbouvet2000-tech.github.io/Citation/">live ↗</a></li>
+    <li data-cat="learning product"><b>Code Examen</b><span>Offline-first driving-test quiz. Installable PWA, works without network.</span><a href="https://martinbouvet2000-tech.github.io/code-examen/">live ↗</a></li>
+    <li data-cat="agents business"><b>Business Idea Radar</b><span>Reddit pain-point scanner with a Streamlit dashboard and an optional Claude check.</span><a href="https://martinbouvet2000-tech.github.io/business-idea-radar/">live ↗</a></li>
+    <li data-cat="product business"><b>Aurélia</b><span>E-commerce brand for LED light-therapy masks: Shopify theme and landing page.</span><a href="https://martinbouvet2000-tech.github.io/aurelia-masque/">live ↗</a></li>
+    <li data-cat="agents"><b>Forge</b><span>Turns a raw thought into a strong prompt through a 6-step pipeline: intent, clarify, assemble, red-team, score.</span><a class="mute">local</a></li>
+    <li data-cat="agents"><b>Self-improving skills</b><span>A loop that scores my Claude Code skills on 10 dimensions and keeps only the changes that improve them (adapted from an open-source project).</span><a class="mute">local</a></li>
+    <li data-cat="agents"><b>Self-updating GitHub profile</b><span>A GitHub Action rebuilds my profile card from the GitHub API every morning. No third-party service.</span><a href="https://github.com/martinbouvet2000-tech/martinbouvet2000-tech">source ↗</a></li>
+  </ul>
+</div></section>
+
+<section class="block" id="about" style="border-top:1px solid var(--line)"><div class="wrap about">
+  <div class="reveal">
+    <span class="kicker">About</span>
+    <p class="big">Business student by day, builder by night. I care about one question: <em>what does this create, for whom, and is it worth paying for?</em></p>
+  </div>
+  <ol class="timeline reveal">
+    <li><time>Oxford</time><span>Studied LLMs, generative and agentic AI.</span></li>
+    <li><time>Feb 2026</time><span>First commit. Started shipping with AI agents.</span></li>
+    <li><time>Summer 2026</time><span>Nous Deux, Cortex, Diavie and the AI OS go live.</span></li>
+    <li><time>Sep 2026</time><span>Global BBA at emlyon business school, Lyon. Launching the e-invoicing audit.</span></li>
+    <li><time>Now</time><span>Open to conversations about AI automation for small businesses.</span></li>
+  </ol>
+</div></section>
+
+<footer><div class="wrap">
+  <span>© 2026 Martin Bouvet · Lyon, France</span>
+  <span><a href="https://github.com/martinbouvet2000-tech">github ↗</a></span>
+  <span>Hand-built, no framework, no tracker.</span>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

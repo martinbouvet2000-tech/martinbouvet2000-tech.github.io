@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HAO — Hierarchical Agent Orchestration · Martin Bouvet</title>
+<meta name="description" content="Case study: HAO runs LLM agents as an org chart. Agents decide, use tools, and escalate to their manager when confidence is too low. TypeScript, Claude, OpenRouter, Ollama.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="../assets/favicon.svg">
+</head>
+<body>
+<nav class="nav"><div class="wrap">
+  <a class="brand" href="../">martin<b>@</b>bouvet</a>
+  <ul><li><a href="../#work">Work</a></li><li class="hide-s"><a href="../#business">Business</a></li><li><a href="../#about">About</a></li></ul>
+  <button class="theme-btn" aria-label="Toggle theme">☾</button>
+</div></nav>
+
+<header class="cs-hero"><div class="wrap">
+  <span class="kicker">Case study 03 · Agent systems</span>
+  <h1>HAO</h1>
+  <p class="lede">Hierarchical Agent Orchestration: LLM agents organised like a company. They decide, use tools, and pass a decision up to their manager when they aren't confident enough.</p>
+  <dl class="cs-facts">
+    <div><dt>Role</dt><dd>Design &amp; build</dd></div>
+    <div><dt>For</dt><dd>B2B automation: lead sourcing, market watch</dd></div>
+    <div><dt>Stack</dt><dd>TypeScript · Claude · OpenRouter · Ollama · SQLite</dd></div>
+    <div><dt>Status</dt><dd>Working prototype, paused</dd></div>
+  </dl>
+</div></header>
+
+<div class="wrap cs-body">
+  <aside class="cs-toc"><a href="#problem">Problem</a><a href="#system">System</a><a href="#decisions">Decisions</a><a href="#quality">Quality</a><a href="#next">Honest status</a></aside>
+  <article class="prose">
+    <h2 id="problem">The problem</h2>
+    <p>Most multi-agent setups are flat: every agent is equal, nobody is accountable, and there is no rule for when a decision is too important for the agent that made it. Real organisations solved this long ago with a chain of command.</p>
+    <p class="callout">What if agents escalated like employees do: only when the stakes exceed their authority?</p>
+
+    <h2 id="system">The system</h2>
+    <ul>
+      <li><strong>Teams as YAML.</strong> Roles, who reports to whom, an authority level from 1 to 10 and an escalation threshold, validated with Zod.</li>
+      <li><strong>Recursive escalation.</strong> A low-confidence decision climbs the hierarchy and stops at the first manager confident enough to own it.</li>
+      <li><strong>Three model providers.</strong> Anthropic, OpenRouter, and fully local models through Ollama.</li>
+      <li><strong>Tools.</strong> A multi-turn tool loop with 7 built-in tools (web search, scraping, files, shell, HTTP, a shared data store) plus custom HTTP tools declared in YAML.</li>
+      <li><strong>Live dashboard.</strong> Hierarchy view, timeline and run history, streamed in real time.</li>
+      <li><strong>Full audit trail.</strong> Every decision and its cost is stored in SQLite, with a per-model cost table.</li>
+    </ul>
+    <div class="diagram" role="img" aria-label="Escalation: sourcer agent decides; if confidence is below threshold the decision goes to the lead manager, then to the CEO agent. Every step is logged to SQLite and streamed to the dashboard.">
+      <svg viewBox="0 0 760 240">
+        <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker></defs>
+        <rect class="box" x="20" y="160" width="170" height="56" rx="10"/><text x="34" y="184">Sourcer agent</text><text class="sub" x="34" y="202">authority 3 · tools</text>
+        <rect class="box" x="280" y="95" width="190" height="56" rx="10"/><text x="294" y="119">Lead manager agent</text><text class="sub" x="294" y="137">authority 6</text>
+        <rect class="box hot" x="560" y="30" width="180" height="56" rx="10"/><text x="574" y="54">CEO agent</text><text class="sub" x="574" y="72">authority 10 · final call</text>
+        <path class="edge" d="M190 175L276 135"/><text class="sub" x="176" y="140">confidence &lt; threshold</text>
+        <path class="edge" d="M470 110L556 70"/><text class="sub" x="452" y="76">still unsure</text>
+        <rect class="box" x="560" y="160" width="180" height="56" rx="10"/><text x="574" y="184">SQLite + live stream</text><text class="sub" x="574" y="202">decisions · costs · events</text>
+        <path class="edge" d="M190 196H556"/><path class="edge" d="M470 135L560 175"/><path class="edge" d="M650 86V156"/>
+      </svg>
+    </div>
+
+    <h2 id="decisions">Decisions worth telling</h2>
+    <ul>
+      <li><strong>One number decides escalation.</strong> Each agent has a single confidence threshold, so behaviour is predictable and easy to audit.</li>
+      <li><strong>One client, many models.</strong> A single OpenAI-compatible client covers OpenRouter and Ollama. Switching to a local model cut a run from 20+ minutes on rate-limited free models to about one minute.</li>
+      <li><strong>Guard rails against runaway agents.</strong> Tool outputs are truncated and every loop is capped at 10 iterations, which bounds both behaviour and cost.</li>
+      <li><strong>Tests never call a real model.</strong> A mock agent plugs into the same interface.</li>
+    </ul>
+
+    <h2 id="quality">Quality</h2>
+    <div class="signals">
+      <div><b>55</b><span>unit tests</span></div>
+      <div><b>3</b><span>LLM providers</span></div>
+      <div><b>~4.9k</b><span>lines of TypeScript</span></div>
+    </div>
+    <p>Tests cover multi-level escalation (14), custom tools (21) and cost metrics (20).</p>
+
+    <h2 id="next">Honest status</h2>
+    <p>HAO is a local prototype, paused since late August 2026 while I focus on revenue. It hasn't run in production, and its file and shell tools aren't sandboxed yet. Open-sourcing a hardened version is on the list.</p>
+  </article>
+</div>
+
+<div class="wrap next-cs"><a href="ai-os.html">← The AI OS</a><a href="nous-deux.html">Next: Nous Deux →</a></div>
+<footer><div class="wrap"><span>© 2026 Martin Bouvet</span><a href="https://github.com/martinbouvet2000-tech">github ↗</a></div></footer>
+<script src="../assets/main.js"></script>
+</body>
+</html>

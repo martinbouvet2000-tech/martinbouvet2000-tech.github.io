@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nous Deux — a private space for long-distance couples · Martin Bouvet</title>
+<meta name="description" content="Case study: Nous Deux, a private PWA for long-distance couples. React 19, TypeScript, Supabase with row-level security on every table, 374 tests, CI on every push.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="../assets/favicon.svg">
+</head>
+<body>
+<nav class="nav"><div class="wrap">
+  <a class="brand" href="../">martin<b>@</b>bouvet</a>
+  <ul><li><a href="../#work">Work</a></li><li class="hide-s"><a href="../#business">Business</a></li><li><a href="../#about">About</a></li></ul>
+  <button class="theme-btn" aria-label="Toggle theme">☾</button>
+</div></nav>
+
+<header class="cs-hero"><div class="wrap">
+  <span class="kicker">Case study 04 · Product</span>
+  <h1>Nous Deux</h1>
+  <p class="lede">A private shared space for long-distance couples. Two accounts, one space, and every piece of data locked down at the database level.</p>
+  <div class="cta">
+    <a class="btn primary" href="https://martinbouvet2000-tech.github.io/nous-deux/" target="_blank" rel="noopener">Open the app ↗</a>
+    <a class="btn" href="https://github.com/martinbouvet2000-tech/nous-deux" target="_blank" rel="noopener">Source code ↗</a>
+  </div>
+  <dl class="cs-facts">
+    <div><dt>Role</dt><dd>Product, design, build</dd></div>
+    <div><dt>For</dt><dd>Couples living apart</dd></div>
+    <div><dt>Stack</dt><dd>React 19 · TypeScript · Supabase · Vite</dd></div>
+    <div><dt>Status</dt><dd>Live, open source (MIT)</dd></div>
+  </dl>
+</div></header>
+
+<div class="wrap cs-body">
+  <aside class="cs-toc"><a href="#problem">Problem</a><a href="#product">Product</a><a href="#security">Security model</a><a href="#decisions">Decisions</a><a href="#quality">Quality</a></aside>
+  <article class="prose">
+    <h2 id="problem">The problem</h2>
+    <p>Long-distance couples juggle time zones, two timetables and a dozen apps just to share small daily moments. The data involved (where you are, what you write to each other) is as private as data gets.</p>
+    <p class="callout">The product had to feel warm. The backend had to be paranoid.</p>
+
+    <h2 id="product">The product</h2>
+    <ul>
+      <li><strong>Home.</strong> Two local clocks, a countdown to the next reunion, an “I want to call” ping, day streaks and a daily question.</li>
+      <li><strong>Map.</strong> Opt-in live location on both sides; history is deleted after 48 hours.</li>
+      <li><strong>Agenda.</strong> Shared events across two time zones. A whole school timetable can be imported from PDF, Excel or CSV.</li>
+      <li><strong>Memories.</strong> Notes, gratitudes, video vlogs and time capsules that stay sealed until a chosen date.</li>
+      <li><strong>Notifications.</strong> Web push that says <em>who</em> did something, never <em>what</em> it contains.</li>
+      <li><strong>Your data is yours.</strong> Full export and account deletion, stored files included.</li>
+    </ul>
+
+    <h2 id="security">The security model</h2>
+    <p>The app talks to Supabase directly with a public key, on purpose. That only works if the database itself refuses everything that isn't yours.</p>
+    <div class="diagram" role="img" aria-label="React PWA calls Supabase with a public key; Postgres row-level security decides what each user can read; edge functions verify revocable tokens for callers without a session.">
+      <svg viewBox="0 0 760 210">
+        <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker></defs>
+        <rect class="box" x="10" y="30" width="170" height="56" rx="10"/><text x="24" y="54">React PWA</text><text class="sub" x="24" y="72">offline read · public key</text>
+        <rect class="box hot" x="260" y="30" width="230" height="56" rx="10"/><text x="274" y="54">Postgres + RLS</text><text class="sub" x="274" y="72">129 policies · every table</text>
+        <rect class="box" x="570" y="30" width="180" height="56" rx="10"/><text x="584" y="54">Realtime · Storage</text><text class="sub" x="584" y="72">scoped to the couple</text>
+        <rect class="box" x="10" y="130" width="170" height="56" rx="10"/><text x="24" y="154">Phone shortcut</text><text class="sub" x="24" y="172">no session available</text>
+        <rect class="box hot" x="260" y="130" width="230" height="56" rx="10"/><text x="274" y="154">Edge functions</text><text class="sub" x="274" y="172">revocable tokens · HMAC links</text>
+        <rect class="box" x="570" y="130" width="180" height="56" rx="10"/><text x="584" y="154">pg_cron</text><text class="sub" x="584" y="172">48 h location purge</text>
+        <path class="edge" d="M180 58H256"/><path class="edge" d="M490 58H566"/><path class="edge" d="M180 158H256"/><path class="edge" d="M375 130V90"/><path class="edge" d="M660 130V90"/>
+      </svg>
+    </div>
+    <ul>
+      <li>Sign-ups are capped at two accounts; linking partners is locked.</li>
+      <li>Time capsules are sealed by the database until their date, not hidden by the interface.</li>
+      <li>83 policies were rewritten to evaluate the user once per query instead of once per row.</li>
+      <li>Every destructive migration ships with a rollback script.</li>
+    </ul>
+
+    <h2 id="decisions">Decisions worth telling</h2>
+    <ul>
+      <li><strong>Security in the database, not the client.</strong> The client is untrusted by design.</li>
+      <li><strong>Edge functions check access themselves.</strong> Some callers, like a phone shortcut, can't send a session token, so they get revocable tokens and 5-minute signed links.</li>
+      <li><strong>Background location through a phone shortcut,</strong> because browsers can't read location when the app is closed.</li>
+      <li><strong>Privacy as a feature.</strong> Content-free notifications and 48-hour location retention.</li>
+    </ul>
+
+    <h2 id="quality">Quality</h2>
+    <div class="signals">
+      <div><b>374</b><span>test cases, 32 files</span></div>
+      <div><b>24</b><span>database migrations</span></div>
+      <div><b>~14.9k</b><span>lines of TypeScript</span></div>
+    </div>
+    <p>CI type-checks, lints, tests and builds on every push, and deploys automatically. 85 commits between May and September 2026.</p>
+  </article>
+</div>
+
+<div class="wrap next-cs"><a href="hao.html">← HAO</a><a href="diavie.html">Next: Diavie →</a></div>
+<footer><div class="wrap"><span>© 2026 Martin Bouvet</span><a href="https://github.com/martinbouvet2000-tech">github ↗</a></div></footer>
+<script src="../assets/main.js"></script>
+</body>
+</html>

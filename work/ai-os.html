@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The AI OS — a second brain that works overnight · Martin Bouvet</title>
+<meta name="description" content="Case study: a personal AI operating system. Saved videos become scored notes twice a day, a nightly agent consolidates them, and other agents query the result.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="../assets/favicon.svg">
+</head>
+<body>
+<nav class="nav"><div class="wrap">
+  <a class="brand" href="../">martin<b>@</b>bouvet</a>
+  <ul><li><a href="../#work">Work</a></li><li class="hide-s"><a href="../#business">Business</a></li><li><a href="../#about">About</a></li></ul>
+  <button class="theme-btn" aria-label="Toggle theme">☾</button>
+</div></nav>
+
+<header class="cs-hero"><div class="wrap">
+  <span class="kicker">Case study 02 · Agent systems</span>
+  <h1>The AI OS</h1>
+  <p class="lede">A second brain that works while I sleep. What I save during the day becomes structured, scored notes; an agent consolidates them every night; my other AI agents search it before they answer me.</p>
+  <dl class="cs-facts">
+    <div><dt>Role</dt><dd>Design, build, operate</dd></div>
+    <div><dt>Runs</dt><dd>Every day, 4 scheduled jobs</dd></div>
+    <div><dt>Stack</dt><dd>Python · Node · PowerShell · Claude Code · Obsidian</dd></div>
+    <div><dt>Status</dt><dd>In daily use, private</dd></div>
+  </dl>
+</div></header>
+
+<div class="wrap cs-body">
+  <aside class="cs-toc"><a href="#problem">Problem</a><a href="#system">System</a><a href="#night">The night shift</a><a href="#decisions">Decisions</a><a href="#numbers">Numbers</a></aside>
+  <article class="prose">
+    <h2 id="problem">The problem</h2>
+    <p>I learn a lot from short videos: a new tool, a prompt technique, a business idea. I saved hundreds of them and remembered almost none. Saving isn't learning, and a note nobody links to is a dead note.</p>
+    <p class="callout">I wanted my knowledge to compound on its own, and to be usable by my AI agents, not only by me.</p>
+
+    <h2 id="system">The system</h2>
+    <ul>
+      <li><strong>Capture.</strong> Three sources: a personal saves export, TikTok favourites and 20 YouTube channels across 7 categories.</li>
+      <li><strong>Transcribe.</strong> Locally with Whisper; YouTube uses native subtitles.</li>
+      <li><strong>Extract and score.</strong> An LLM pulls out tools, prompts, techniques and ideas, then gives each note a 0–100 signal score. Business ideas are also scored against a founder-fit filter.</li>
+      <li><strong>Self-improving catalogue.</strong> New tool names found in notes are added to the catalogue automatically.</li>
+      <li><strong>Write into the vault.</strong> Obsidian, PARA structure, a strict data contract, related notes linked.</li>
+      <li><strong>Serve the agents.</strong> The vault is indexed (full-text, BM25) so Claude Code searches it before answering.</li>
+    </ul>
+    <div class="diagram" role="img" aria-label="Pipeline: capture, transcribe, extract and score with an LLM, write to the vault, nightly agent consolidates, git backup, agents query the index.">
+      <svg viewBox="0 0 780 220">
+        <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker></defs>
+        <rect class="box" x="10" y="30" width="130" height="56" rx="10"/><text x="22" y="54">Capture</text><text class="sub" x="22" y="72">3 sources</text>
+        <rect class="box" x="170" y="30" width="130" height="56" rx="10"/><text x="182" y="54">Transcribe</text><text class="sub" x="182" y="72">Whisper · subtitles</text>
+        <rect class="box hot" x="330" y="30" width="150" height="56" rx="10"/><text x="342" y="54">Extract + score</text><text class="sub" x="342" y="72">LLM · 0–100 signal</text>
+        <rect class="box" x="510" y="30" width="120" height="56" rx="10"/><text x="522" y="54">Vault</text><text class="sub" x="522" y="72">Obsidian · PARA</text>
+        <rect class="box hot" x="510" y="140" width="120" height="56" rx="10"/><text x="522" y="164">Nightly agent</text><text class="sub" x="522" y="182">00:30 · consolidate</text>
+        <rect class="box" x="660" y="30" width="110" height="56" rx="10"/><text x="672" y="54">Git backup</text><text class="sub" x="672" y="72">23:00 daily</text>
+        <rect class="box" x="300" y="140" width="180" height="56" rx="10"/><text x="312" y="164">Agents query it</text><text class="sub" x="312" y="182">full-text index · BM25</text>
+        <path class="edge" d="M140 58H166"/><path class="edge" d="M300 58H326"/><path class="edge" d="M480 58H506"/><path class="edge" d="M630 58H656"/>
+        <path class="edge" d="M555 86V136"/><path class="edge" d="M585 136V90"/><path class="edge" d="M510 168H484"/>
+      </svg>
+    </div>
+
+    <h2 id="night">The night shift</h2>
+    <p>At 00:30 a scheduled Claude Code agent reads the day's journal and changes, consolidates decisions and lessons into the right notes, and fixes links. It runs inside hard limits: an explicit time window, an 18-minute timeout, one retry and a lock file. If it fails, it leaves a failure trace in the next day's journal. The runner also checks for an explicit <code>NIGHTLY_OK</code> line, so in the morning “nothing to do” is never confused with “didn't run”.</p>
+
+    <h2 id="decisions">Decisions worth telling</h2>
+    <ul>
+      <li><strong>Free first, paid as plan B.</strong> Extraction tries the Claude CLI already covered by my subscription, then the API, then a regex fallback, and stops cleanly after 5 failures in a row.</li>
+      <li><strong>A data contract for the vault.</strong> YAML tag lists, title equals filename, <code>created</code>/<code>updated</code> on every note. After the clean-up, orphan notes went from 648 to 48 and broken links to zero.</li>
+      <li><strong>Failure is designed in.</strong> Atomic writes and per-item error handling. An audit found a silent data-loss risk and a path-traversal bug in the vault writer; both are fixed.</li>
+      <li><strong>Resilient to upstream changes.</strong> When a source API changed, the pipeline switched to a fallback mode and kept running.</li>
+    </ul>
+
+    <h2 id="numbers">Numbers</h2>
+    <div class="signals">
+      <div><b>8.3k</b><span>lines of Python, 22 scripts</span></div>
+      <div><b>1,060</b><span>notes in the vault</span></div>
+      <div><b>820</b><span>ideas captured, 715 scored</span></div>
+      <div><b>16</b><span>stages in the pipeline</span></div>
+      <div><b>2×</b><span>links per note after clean-up</span></div>
+      <div><b>682→3</b><span>items left in the inbox</span></div>
+    </div>
+    <p>It runs twice a day (09:00 and 21:00), the nightly agent at 00:30 and the backup at 23:00. The vault itself stays private; a clean, reusable version of the tooling is the next thing I plan to open-source.</p>
+  </article>
+</div>
+
+<div class="wrap next-cs"><a href="cortex.html">← Cortex</a><a href="hao.html">Next: HAO →</a></div>
+<footer><div class="wrap"><span>© 2026 Martin Bouvet</span><a href="https://github.com/martinbouvet2000-tech">github ↗</a></div></footer>
+<script src="../assets/main.js"></script>
+</body>
+</html>
