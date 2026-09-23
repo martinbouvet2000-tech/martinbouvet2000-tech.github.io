@@ -100,7 +100,21 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 400; letter-spacing: -.01em
 .legend li.live time::after { content: " ●"; color: var(--ok); }
 
 /* numbers */
+/* status line: the control-room signal, in the page's own voice */
+.status-line { display: inline-flex; align-items: center; gap: 9px; }
+.status-line .dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--ok);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--ok) 70%, transparent);
+  animation: ping 3.2s ease-out infinite;
+}
+@keyframes ping { 70%, 100% { box-shadow: 0 0 0 9px transparent; } }
+@media (prefers-reduced-motion: reduce) { .status-line .dot { animation: none; } }
+
 .numbers { border-block: 1px solid var(--line); background: var(--bg-2); }
+.status-note { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter) 22px; }
+.status-note span { font: 11px/1.5 var(--mono); color: var(--mute); letter-spacing: .04em; }
+.numbers b[data-k="ci"], .numbers b[data-k="ship"] { font-size: clamp(26px, 3vw, 36px); }
+.numbers b[data-k="ci"] { color: var(--ok); }
 .numbers .wrap { display: grid; grid-template-columns: repeat(4, 1fr); }
 .numbers div { padding: 26px 18px; border-left: 1px solid var(--line); }
 .numbers div:first-child { border-left: 0; }

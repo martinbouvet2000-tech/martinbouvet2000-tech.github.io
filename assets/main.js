@@ -134,3 +134,31 @@ document.documentElement.classList.add("js");
   addEventListener("resize", paint);
   paint();
 })();
+
+// Live status panel: the same readouts as the GitHub profile header, fetched from
+// the public API at load. Static values stay in the HTML as the offline fallback.
+(() => {
+  const root = document.getElementById("status");
+  if (!root) return;
+  const set = (k, v) => { const el = root.querySelector(`[data-k="${k}"]`); if (el && v) el.textContent = v; };
+  const api = (p) => fetch("https://api.github.com" + p).then((r) => (r.ok ? r.json() : Promise.reject(r.status)));
+  const USER = "martinbouvet2000-tech";
+
+  // Same definition as the profile header: repos I own, forks excluded.
+  api(`/users/${USER}/repos?sort=pushed&per_page=100&type=owner`).then((rs) => {
+    const mine = rs.filter((x) => !x.fork);
+    set("repos", mine.length);
+    // The profile repo pushes itself every morning; that is not a ship.
+    const r = mine.find((x) => x.name !== USER);
+    if (!r) return;
+    const mins = Math.floor((Date.now() - new Date(r.pushed_at)) / 60000);
+    const ago = mins < 60 ? `${mins}m` : mins < 1440 ? `${Math.floor(mins / 60)}h` : `${Math.floor(mins / 1440)}d`;
+    set("ship", ago + " ago");
+    const label = root.querySelector('[data-k="ship"]')?.nextElementSibling;
+    if (label) label.textContent = `last push · ${r.name}`;
+  }).catch(() => {});
+
+  api(`/repos/${USER}/nightshift/actions/workflows/ci.yml/runs?per_page=1`)
+    .then((d) => set("ci", (d.workflow_runs?.[0]?.conclusion || "running").replace("success", "passing")))
+    .catch(() => {});
+})();
