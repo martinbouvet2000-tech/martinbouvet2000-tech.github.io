@@ -222,6 +222,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 @media (max-width: 720px) { .signals { grid-template-columns: 1fr 1fr; } }
 /* Where a number came from, under the numbers it explains. */
 .src { font: 11.5px/1.6 var(--mono); color: var(--mute); margin: -8px 0 26px; }
+/* a date must break before it, never inside it */
+.nb { white-space: nowrap; }
 .next-cs { display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid var(--line); padding-block: 32px; font: 14px var(--mono); }
 
 /* reveal */
