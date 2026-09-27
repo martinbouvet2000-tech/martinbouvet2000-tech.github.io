@@ -32,7 +32,7 @@
   </div>
   <dl class="cs-facts">
     <div><dt>Role</dt><dd>Design, build, operate</dd></div>
-    <div><dt>Runs</dt><dd>Every day, 4 scheduled jobs</dd></div>
+    <div><dt>Runs</dt><dd>Five runs every day, across four systems</dd></div>
     <div><dt>Stack</dt><dd>Python · Node · PowerShell · Claude Code · Obsidian</dd></div>
     <div><dt>Status</dt><dd>In daily use · core open source</dd></div>
   </dl>
@@ -75,7 +75,7 @@
     <h2 id="decisions">Decisions worth telling</h2>
     <ul>
       <li><strong>Free first, paid as plan B.</strong> Extraction tries the Claude CLI already covered by my subscription, then the API, then a regex fallback, and stops cleanly after 5 failures in a row.</li>
-      <li><strong>A data contract for the vault.</strong> YAML tag lists, title equals filename, <code>created</code>/<code>updated</code> on every note. After the clean-up, orphan notes went from 648 to 48 and broken links to zero.</li>
+      <li><strong>A data contract for the vault.</strong> YAML tag lists, title equals filename, <code>created</code>/<code>updated</code> on every note. After the clean-up, broken links went to zero; the auditor counted 131 orphans on 2026-09-26.</li>
       <li><strong>Failure is designed in.</strong> Atomic writes and per-item error handling. An audit found a silent data-loss risk and a path-traversal bug in the vault writer; both are fixed.</li>
       <li><strong>Resilient to upstream changes.</strong> When a source API changed, the pipeline switched to a fallback mode and kept running.</li>
     </ul>
@@ -83,13 +83,14 @@
     <h2 id="numbers">Numbers</h2>
     <div class="signals">
       <div><b>8.3k</b><span>lines of Python, 22 scripts</span></div>
-      <div><b>1,060</b><span>notes in the vault</span></div>
+      <div><b>1,080</b><span>notes in the vault, 2026-09-26</span></div>
       <div><b>820</b><span>ideas captured, 715 scored</span></div>
       <div><b>16</b><span>stages in the pipeline</span></div>
-      <div><b>2×</b><span>links per note after clean-up</span></div>
+      <div><b>3.25</b><span>links per note, 2026-09-26</span></div>
       <div><b>682→3</b><span>items left in the inbox</span></div>
     </div>
-    <p>It runs twice a day (09:00 and 21:00), the nightly agent at 00:30 and the backup at 23:00. The vault itself stays private. The reusable core is open source as <a href="https://github.com/martinbouvet2000-tech/nightshift">nightshift</a>: pipeline, contract-aware vault tools and the night-shift runner, with an offline demo that runs in under a minute.</p>
+    <p class="src">Vault counters dated 2026-09-26 are the night agent's own, published as <a href="https://github.com/martinbouvet2000-tech/martinbouvet2000-tech/blob/main/assets/last-run.json">last-run.json</a>. The undated figures are point-in-time counts from the build and are not refreshed automatically.</p>
+    <p>It runs twice a day (09:00 and 21:00), the nightly agent at 00:30, the profile rebuild at 07:17 and the backup at 23:00 — five runs, four systems. The vault itself stays private. The reusable core is open source as <a href="https://github.com/martinbouvet2000-tech/nightshift">nightshift</a>: pipeline, contract-aware vault tools and the night-shift runner, with an offline demo that runs in under a minute.</p>
   </article>
 </div>
 
