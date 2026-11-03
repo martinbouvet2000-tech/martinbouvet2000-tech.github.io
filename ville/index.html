@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The agent city · Martin Bouvet</title>
+<meta name="description" content="A small company of AI agents seen from above: one building per agent, lit windows where it worked today. Counters only, never the contents.">
+<meta name="theme-color" content="#0c0b09">
+<link rel="icon" href="../assets/favicon.svg">
+<!-- Direction: night map, editorial. Authority: the profile's control room (header.svg, nightly.svg) and the portfolio's dark tokens.
+     Palette: #0c0b09 ground, #f1ebdf ink, #8f8779 mute, #2c2720 line, #f0883e accent, #f2b66d lit window, #f85149 error.
+     Fonts: system serif + system mono, nothing fetched. Dependencies: none. -->
+<style>
+:root {
+  --bg: #0c0b09; --bg-2: #14120f; --ink: #f1ebdf; --ink-2: #c4bcad; --mute: #8f8779; --line: #2c2720;
+  --accent: #f0883e; --lit: #f2b66d; --red: #f85149; --ok: #7ee787;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --mono: ui-monospace, SFMono-Regular, "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
+  --ease: cubic-bezier(.22, .8, .24, 1);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); }
+body { font: 16px/1.6 var(--serif); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+a { color: inherit; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+a:hover { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(18px, 4vw, 40px); }
+.kicker { font: 500 12px/1.2 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.mono { font-family: var(--mono); }
+
+header.top { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 0 0; }
+header.top a { font: 13px var(--mono); color: var(--ink-2); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+header.top a:hover { color: var(--accent); }
+
+.intro { display: grid; grid-template-columns: 1.25fr 1fr; gap: 24px 56px; align-items: end; padding: 44px 0 28px; }
+h1 { font-weight: 400; font-size: clamp(38px, 5.4vw, 72px); line-height: 1.02; letter-spacing: -.015em; margin: 14px 0 0; }
+h1 em { color: var(--lit); }
+.lede { color: var(--ink-2); font-size: 18px; margin: 0; max-width: 46ch; }
+.lede b { color: var(--ink); font-weight: 400; }
+
+.stage { position: relative; display: grid; grid-template-columns: 1fr 340px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.canvas-box { position: relative; height: min(72vh, 680px); min-height: 420px; touch-action: none; cursor: grab; }
+.canvas-box.dragging { cursor: grabbing; }
+canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hint { position: absolute; left: 0; bottom: 14px; font: 12px var(--mono); color: var(--mute); pointer-events: none; transition: opacity .6s var(--ease); }
+.tip { position: absolute; pointer-events: none; font: 12px/1.3 var(--mono); color: var(--ink); background: rgba(12, 11, 9, .88);
+  border: 1px solid var(--line); border-radius: 6px; padding: 6px 9px; white-space: nowrap; opacity: 0; transform: translate(-50%, calc(-100% - 10px)) translateY(4px);
+  transition: opacity .2s var(--ease), transform .25s var(--ease); }
+.tip.on { opacity: 1; transform: translate(-50%, calc(-100% - 10px)); }
+.tip b { color: var(--lit); font-weight: 500; }
+
+.card { border-left: 1px solid var(--line); padding: 28px 0 28px 28px; display: flex; flex-direction: column; gap: 18px; min-height: 100%; }
+.card h2 { font-weight: 400; font-size: 34px; line-height: 1.05; margin: 6px 0 0; }
+.card p.role { color: var(--ink-2); margin: 0; font-size: 17px; min-height: 3.2em; }
+.rows { margin: 0; padding: 0; list-style: none; font: 13px var(--mono); }
+.rows li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-top: 1px solid var(--line); }
+.rows li span:first-child { color: var(--mute); letter-spacing: .08em; text-transform: uppercase; font-size: 11.5px; }
+.rows .red { color: var(--red); }
+.rows .lit { color: var(--lit); }
+.rows + div { margin-top: 6px; }
+.hours { display: grid; grid-template-columns: repeat(24, 1fr); gap: 2px; align-items: end; height: 46px; }
+.hours i { display: block; background: var(--accent); border-radius: 1px; min-height: 2px; transform-origin: bottom; transition: transform .6s var(--ease); }
+.hours i.zero { background: var(--line); }
+.hours-scale { display: flex; justify-content: space-between; font: 10.5px var(--mono); color: var(--mute); margin-top: 4px; }
+.card .back { align-self: flex-start; font: 12px var(--mono); color: var(--ink-2); background: none; border: 1px solid var(--line); border-radius: 999px;
+  padding: 0 14px; min-height: 44px; cursor: pointer; transition: border-color .2s, color .2s; }
+.card .back:hover { color: var(--accent); border-color: var(--accent); }
+.card .fade { animation: in .45s var(--ease); }
+@keyframes in { from { opacity: 0; transform: translateY(6px); } }
+
+.controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; padding: 18px 0; }
+.turn { display: flex; gap: 8px; }
+.turn button, .chips button {
+  font: 12.5px var(--mono); color: var(--ink-2); background: var(--bg-2); border: 1px solid var(--line); border-radius: 999px;
+  min-height: 44px; min-width: 44px; padding: 0 14px; cursor: pointer; transition: border-color .2s, color .2s, background .2s;
+}
+.turn button:hover, .chips button:hover { color: var(--ink); border-color: var(--mute); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
+.chips button { display: inline-flex; align-items: center; gap: 8px; }
+.chips button::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--line); }
+.chips button.worked::before { background: var(--lit); }
+.chips button.err::before { background: var(--red); }
+.chips button[aria-pressed="true"] { color: var(--bg); background: var(--ink); border-color: var(--ink); }
+.label-q { font: 11.5px var(--mono); color: var(--mute); letter-spacing: .1em; text-transform: uppercase; }
+
+footer { padding: 28px 0 48px; color: var(--mute); font-size: 15px; border-top: 1px solid var(--line); }
+footer p { margin: 0 0 6px; max-width: 70ch; }
+.stale { color: var(--lit); font-family: var(--mono); font-size: 13px; }
+
+@media (max-width: 900px) {
+  .intro { grid-template-columns: 1fr; padding-top: 28px; }
+  .stage { grid-template-columns: 1fr; }
+  .canvas-box { height: min(64vh, 100vw); min-height: 320px; max-height: 560px; }
+  .hint { bottom: 8px; }
+  .card { border-left: 0; border-top: 1px solid var(--line); padding: 24px 0; min-height: 0; }
+  .card h2 { font-size: 30px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <span class="kicker">Founder OS · the city</span>
+    <a href="../">Portfolio</a>
+  </header>
+
+  <section class="intro">
+    <div>
+      <h1>A small company of agents, <em>seen from above.</em></h1>
+    </div>
+    <p class="lede" id="lede">Each building is an AI agent that wakes on a schedule. A lit window means it worked that day; a red one, an error. <b>Drag to walk around it, pick a building to see what it does.</b> Counters only, never the contents.</p>
+  </section>
+
+  <section class="stage" aria-label="The city">
+    <div class="canvas-box" id="box">
+      <canvas id="c" role="img" aria-label="Isometric map of the agent city"></canvas>
+      <div class="tip" id="tip" aria-hidden="true"></div>
+      <p class="hint" id="hint">drag to turn · tap a building</p>
+    </div>
+    <aside class="card" id="card" aria-live="polite"></aside>
+  </section>
+
+  <div class="controls">
+    <div class="turn" role="group" aria-label="Turn the city">
+      <button type="button" id="left" aria-label="Turn left">&#8634;</button>
+      <button type="button" id="right" aria-label="Turn right">&#8635;</button>
+      <button type="button" id="pause" aria-pressed="false">pause</button>
+    </div>
+    <span class="label-q">Buildings</span>
+    <ul class="chips" id="chips"></ul>
+  </div>
+
+  <footer>
+    <p id="source">Drawn in your browser from <span class="mono">ville.json</span>: one file of counters a script copies every night out of the city's own database, read-only. The company itself stays private.</p>
+    <p><a href="https://github.com/martinbouvet2000-tech/martinbouvet2000-tech/blob/main/scripts/collect_ville.py">The collector and its whitelist</a> · <a href="https://github.com/martinbouvet2000-tech">the profile</a></p>
+    <p class="stale" id="stale" hidden></p>
+  </footer>
+</div>
+<script src="ville.js"></script>
+</body>
+</html>

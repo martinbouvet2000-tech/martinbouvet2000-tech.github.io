@@ -1,0 +1,213 @@
+{
+ "schema": 1,
+ "date": "2026-11-03",
+ "generated_at": "2026-11-03T20:15",
+ "agents": {
+  "active": 14,
+  "total": 41
+ },
+ "today": {
+  "wakes": 111,
+  "done": 105,
+  "errors": 2,
+  "capped": 4,
+  "by_hour": [
+   5,
+   7,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   16,
+   4,
+   12,
+   7,
+   2,
+   10,
+   13,
+   21,
+   4,
+   3,
+   2,
+   4,
+   1,
+   0,
+   0,
+   0
+  ]
+ },
+ "hospital": {
+  "patients": 0
+ },
+ "studio": {
+  "no_capture": 0,
+  "to_score": 0,
+  "to_rework": 2,
+  "to_show": 1,
+  "ready": 1
+ },
+ "vault": {
+  "writes": 3
+ },
+ "tests": {
+  "declared": 1271
+ },
+ "buildings": [
+  {
+   "key": "patron",
+   "name": "Le Patron",
+   "quarter": "mairie",
+   "role": "Reads every report, decides what reaches Martin and hands work to the quarters.",
+   "wakes": 32,
+   "done": 31,
+   "errors": 1,
+   "capped": 0,
+   "in_hospital": false
+  },
+  {
+   "key": "comptoir",
+   "name": "Le Comptoir",
+   "quarter": "business",
+   "role": "Runs the business quarter and sets the day's order for its agents.",
+   "wakes": 5,
+   "done": 4,
+   "errors": 0,
+   "capped": 1,
+   "in_hospital": false
+  },
+  {
+   "key": "prospecteur",
+   "name": "Le Prospecteur",
+   "quarter": "business",
+   "role": "Looks for small businesses the audit offer could help.",
+   "wakes": 3,
+   "done": 3,
+   "errors": 0,
+   "capped": 0,
+   "in_hospital": false
+  },
+  {
+   "key": "plume",
+   "name": "La Plume",
+   "quarter": "business",
+   "role": "Drafts first messages and follow-ups. Nothing leaves without Martin.",
+   "wakes": 3,
+   "done": 3,
+   "errors": 0,
+   "capped": 0,
+   "in_hospital": false
+  },
+  {
+   "key": "tri",
+   "name": "Le Tri",
+   "quarter": "business",
+   "role": "Sorts the inbox into piles. It reads, it never answers.",
+   "wakes": 19,
+   "done": 19,
+   "errors": 0,
+   "capped": 0,
+   "in_hospital": false
+  },
+  {
+   "key": "compteur",
+   "name": "Le Compteur",
+   "quarter": "business",
+   "role": "Counts what the city produced and what it cost.",
+   "wakes": 4,
+   "done": 2,
+   "errors": 1,
+   "capped": 1,
+   "in_hospital": false
+  },
+  {
+   "key": "ecole",
+   "name": "L'École",
+   "quarter": "ecole",
+   "role": "Keeps the school calendar and prepares what is due next.",
+   "wakes": 14,
+   "done": 14,
+   "errors": 0,
+   "capped": 0,
+   "in_hospital": false
+  },
+  {
+   "key": "studio",
+   "name": "Le Studio",
+   "quarter": "studio",
+   "role": "Briefs the design workshop and decides what gets shown.",
+   "wakes": 8,
+   "done": 8,
+   "errors": 0,
+   "capped": 0,
+   "in_hospital": false
+  },
+  {
+   "key": "graphisme",
+   "name": "Graphisme",
+   "quarter": "studio",
+   "role": "Draws layouts and type for the workshop.",
+   "wakes": 5,
+   "done": 4,
+   "errors": 0,
+   "capped": 1,
+   "in_hospital": false
+  },
+  {
+   "key": "interface",
+   "name": "Interface",
+   "quarter": "studio",
+   "role": "Builds interface mockups that can be clicked.",
+   "wakes": 0,
+   "done": 0,
+   "errors": 0,
+   "capped": 0,
+   "in_hospital": false
+  },
+  {
+   "key": "mouvement",
+   "name": "Mouvement",
+   "quarter": "studio",
+   "role": "Works on motion: easing, timing, transitions.",
+   "wakes": 5,
+   "done": 4,
+   "errors": 0,
+   "capped": 1,
+   "in_hospital": false
+  },
+  {
+   "key": "critique",
+   "name": "Le Critique",
+   "quarter": "studio",
+   "role": "Scores every mockup before Martin does.",
+   "wakes": 3,
+   "done": 3,
+   "errors": 0,
+   "capped": 0,
+   "in_hospital": false
+  },
+  {
+   "key": "relecteur",
+   "name": "Le Relecteur",
+   "quarter": "ecole",
+   "role": "Rereads every draft before Martin sees it.",
+   "wakes": 5,
+   "done": 5,
+   "errors": 0,
+   "capped": 0,
+   "in_hospital": false
+  },
+  {
+   "key": "medecin",
+   "name": "L'Hôpital",
+   "quarter": "hopital",
+   "role": "Admits an agent that keeps failing and lets it out once it works again.",
+   "wakes": 0,
+   "done": 0,
+   "errors": 0,
+   "capped": 0,
+   "in_hospital": false
+  }
+ ]
+}
